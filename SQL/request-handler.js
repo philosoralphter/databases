@@ -10,7 +10,6 @@ var findUser = db.findUser;
 
 exports.postMessage = function(req, res) {
   // declare this variable so we can retain access to it throughout the entire promise chain.
-  console.log('postMessage called...posting message');
   var message;
 
   var resultsCallback = function (results) {
@@ -30,15 +29,12 @@ exports.postMessage = function(req, res) {
     console.log('requestHandler parseData called with message:', msg);
       message = msg;
       findUser(msg.username, function (err, results) {
-        console.log('findingUser with results:', results);
         //if (err) throw err;
         // no results/0 results
         if (!results || !results.length) {
           // create the user, then post the message
-              console.log('requestHandler.parseData if !results');
           saveUser(message.username, resultsCallback);
         } else {
-          console.log('requestHandler.parseData else');
           // user exists, post the message to this user
           resultsCallback(results);
         }
@@ -47,9 +43,8 @@ exports.postMessage = function(req, res) {
 };
 
 exports.getMessages = function(req, res) {
-  console.log('getMessages called...getting messages');
-  findMessages(function(err, messages) {
-    if (err) throw err;
+  findMessages(function(messages) {
+    //if (err) throw err;
     serverHelpers.sendResponse(res, messages);
   });
 };

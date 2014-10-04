@@ -41,7 +41,7 @@ describe("Persistent Node Chat Server", function() {
               /* Now if we look in the database, we should find the
                * posted message there. */
 
-              var queryString = "SELECT text FROM messages ORDER BY id DESC LIMIT 1";
+              var queryString = "SELECT * FROM messages";
               var queryArgs = [];
               /* TODO: Change the above queryString & queryArgs to match your schema design
                * The exact query string and query args to use
@@ -63,8 +63,8 @@ describe("Persistent Node Chat Server", function() {
 
   it("Should output all messages from the DB", function(done) {
     // Let's insert a message into the db
-    var queryString = "SELECT * FROM messages";
-    var queryArgs = [];
+    var queryString = 'INSERT INTO messages (text, user, roomname) VALUES (?,?,?)'
+    var queryArgs = ["Men like you can never change!","Ralph","main"];
     /* TODO - The exact query string and query args to use
      * here depend on the schema you design, so I'll leave
      * them up to you. */
@@ -74,8 +74,11 @@ describe("Persistent Node Chat Server", function() {
         if (err) { throw err; }
         /* Now query the Node chat server and see if it returns
          * the message we just inserted: */
-        request("http://127.0.0.1:3000/classes/messages",
+        request({method: "GET",
+             uri: "http://127.0.0.1:3000/classes/messages"
+            },
           function(error, response, body) {
+            if (error) { throw error; }
             var messageLog = JSON.parse(body);
             expect(messageLog[0].text).to.equal("Men like you can never change!");
             expect(messageLog[0].roomname).to.equal("main");
