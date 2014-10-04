@@ -7,12 +7,16 @@ CREATE TABLE messages (
   text VARCHAR(300),
   user VARCHAR(30),
   roomname VARCHAR(100),
-  ID int (10),
+  ID int (10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (ID)
 );
 
 /* Create other tables and define schemas for them here! */
-
+CREATE TABLE users (
+  username VARCHAR(30),
+  ID int (10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (ID)
+);
 
 
 
